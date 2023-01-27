@@ -1,0 +1,36 @@
+<%- include("partials/header",{ Condition: Condition, User: User }) %>
+
+<div class="row">
+    <div class=" mt-5 pt-5 mb-4">
+        <h2 class="text-center">Account Request</h2>
+        <div class="question mt-4">
+            <% Users.forEach(function(quest){ %>
+                <% if(quest.AppRejUser === -1){ %> 
+                    <div class="card shadow bg-body rounded cd-mine"><!-- shadow-sm p-3 mb-5 bg-body -->
+                        <div class="card-body">
+                            <h5 class="card-title fontChange"> <%= quest.UserName %> </h5>
+                        </div>
+                        <div class="card-footer" style="float: right;">
+                            <span class="text-muted"><%= quest.Subject %> &#x2022; <%= quest.Email %></span>
+                            <form action="/admin/reject" method="post" style="float: right;">
+                                <input type="text" name="id" id=""  value="<%= quest._id %>" hidden>
+                                <button type="submit" style="margin-left: 20%;" class="btn-primary btn btn-mine">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                            </form>
+                            <form action="/admin/approve" method="post" style="float: right;">
+                                <input type="text" name="id" id=""  value="<%= quest._id %>" hidden>
+                                <button type="submit" class="btn-primary btn btn-mine">
+                                    <i class="fa-solid fa-check"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                <% } %> 
+            <% }) %>
+        </div>
+    </div>
+</div>
+
+
+<%- include("partials/footer") %>

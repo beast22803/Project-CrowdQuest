@@ -1,0 +1,68 @@
+<%- include("partials/header",{ Condition: Condition, User: User }) %>
+<div class="row">
+    <div class="col-lg-2 shadow-sm" style="min-height: 55vmax;padding-top: 7%;text-align: center;" data-aos="fade-" data-aos-delay="10"><!--  data-aos="fade-right" data-aos-delay="10" was-validated -->
+        <div style="text-align: justify; margin: 10%;">
+            <form action="/subjectexpert/search" method="post">
+                <p class="fw-semibold fs-5 m-1">Difficulty</p>
+                <!-- <h6>Difficulty</h6> -->
+                <div class="ms-2">
+                    <input type="radio" name="difficulty" id="easy" value="Easy"> <label for="easy">Easy</label><br>
+                    <input type="radio" name="difficulty" id="medium" value="Medium"> <label for="medium">Medium</label><br>
+                    <input type="radio" name="difficulty" id="hard" value="Hard"> <label for="hard">Hard</label>
+                </div>
+                <p class="fw-semibold fs-5 m-1">Type</p>
+                <!-- <h6>Type</h6> -->
+                <div class="ms-2">
+                    <input type="radio" name="type" id="short" value="Short"> <label for="short">Short</label><br>
+                    <input type="radio" name="type" id="long" value="Long"> <label for="long">Long</label>
+                </div>
+                <p class="fw-semibold fs-5 m-1">Users</p>
+                <!-- <h6>Subject</h6> -->
+                <div class="mb-3">
+                    <select name="user" id="" class="dib form-control">
+                        <option selected disabled value="">Select the User</option>
+                        <% for(let i=0;i<Users.length;i++){ %> 
+                            <option value="<%= Users[i].UserName %>"><%= Users[i].UserName %></option>
+                        <% } %>
+                    </select>
+                </div>
+                <button type="submit" class="linkCont btn">Search</button>
+            </form>
+        </div>
+    </div>
+    <div class="col-lg-10 mt-5 pt-5 mb-4">
+        <h2 class="text-center"><%= User.Subject %> Questions</h2>
+        <div class="question mt-4">
+            <% Questions.forEach(function(quest){ %>
+                <div class="card shadow bg-body rounded cd-mine"><!-- shadow-sm p-3 mb-5 bg-body -->
+                    <div class="card-body">
+                        <h5 class="card-title fontChange"> <%= quest.Question %> </h5>
+                        <% for(let i=0;i<Users.length;i++){ %>  
+                            <% if(quest.UserID.equals(Users[i]._id)) { %> 
+                                <h6 class="card-subtitle mt-2 text-muted fontChange"> <%= Users[i].UserName %> </h6>
+                            <% } %> 
+                        <% } %> 
+                    </div>
+                    <div class="card-footer" style="float: right;">
+                        <span class="text-muted"><%= quest.Type %> &#x2022; <%= quest.Difficulty %></span>
+                        <form action="/subjectexpert/reject" method="post" style="float: right;">
+                            <input type="text" name="id" id=""  value="<%= quest._id %>" hidden>
+                            <button type="submit" style="margin-left: 20%;" class="btn-primary btn btn-mine">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </form>
+                        <form action="/subjectexpert/approve" method="post" style="float: right;">
+                            <input type="text" name="id" id=""  value="<%= quest._id %>" hidden>
+                            <button type="submit" class="btn-primary btn btn-mine">
+                                <i class="fa-solid fa-check"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+</div>
+
+
+<%- include("partials/footer") %>

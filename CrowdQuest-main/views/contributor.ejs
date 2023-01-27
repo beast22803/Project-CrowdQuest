@@ -1,0 +1,149 @@
+<%- include("partials/header",{ Condition: Condition, User: User }) %>
+<% let sub = ["PPS using C","Data Structures using C++","OOPs using C++","Java","Python","FLAT-Formal Languages and Automata Theory","Complier Designing","Computer Networks","Cloud Computing","IOT-Internet Of Things","Cryptography and Network Security","Machine Learning","UML and Design Patterns","DAA-Design Analysis Algorithms","AI-Artificial Intelligance"] %> 
+    <div class="row">
+        <div class="col-lg-2 shadow-sm" style="min-height: 55vmax;padding-top: 7%;text-align: center;" data-aos="fade-" data-aos-delay="10"><!--  data-aos="fade-right" data-aos-delay="10" was-validated -->
+            <button class="linkCont btn" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-plus"></i>&nbsp;Create Question</button>
+            <div style="text-align: justify; margin: 10%;">
+                <form action="/contributor/search" method="post">
+                    <p class="fw-semibold fs-5 m-1">Difficulty</p>
+                    <!-- <h6>Difficulty</h6> -->
+                    <div class="ms-2">
+                        <input type="radio" name="difficulty" id="easy" value="Easy"> <label for="easy">Easy</label><br>
+                        <input type="radio" name="difficulty" id="medium" value="Medium"> <label for="medium">Medium</label><br>
+                        <input type="radio" name="difficulty" id="hard" value="Hard"> <label for="hard">Hard</label>
+                    </div>
+                    <p class="fw-semibold fs-5 m-1">Type</p>
+                    <!-- <h6>Type</h6> -->
+                    <div class="ms-2">
+                        <input type="radio" name="type" id="short" value="Short"> <label for="short">Short</label><br>
+                        <input type="radio" name="type" id="long" value="Long"> <label for="long">Long</label>
+                    </div>
+                    <p class="fw-semibold fs-5 m-1">Subject</p>
+                    <!-- <h6>Subject</h6> -->
+                    <div class="mb-3">
+                        <select name="subject" id="" class="dib form-control">
+                            <option selected disabled value="">Select the subject</option>
+                            <% for(let i=0;i<sub.length;i++){ %> 
+                                <option value="<%= sub[i] %>"><%= sub[i] %></option>
+                            <% } %>
+                        </select>
+                    </div>
+                    <button type="submit" class="linkCont btn">Search</button>
+                </form>
+            </div>
+        </div>
+        <div class="col-lg-10 mt-5 pt-5 mb-4">
+            <h2 class="text-center">Your Submissions</h2>
+            <div class="question mt-4">
+                <% Questions.slice().reverse().forEach(function(quest){ %>
+                    <div class="card shadow bg-body rounded cd-mine"><!-- shadow-sm p-3 mb-5 bg-body -->
+                        <div class="card-body">
+                            <h5 class="card-title fontChange"> <%= quest.Question %> </h5>
+                            <h6 class="card-subtitle mt-2 text-muted fontChange"> <%= quest.Subject %> </h6>
+                        </div>
+                        <div class="card-footer">
+                            <span class="text-muted"><%= quest.Type %> &#x2022; <%= quest.Difficulty %></span>
+                            <form action="/contributor/deleteQuestion" method="post" style="float: right;">
+                                <input type="text" name="id" id=""  value="<%= quest._id %>" hidden>
+                                <button type="submit" class="btn-primary btn btn-mine">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </form>
+                            <button style="float: right;margin-right: 1%;" class="btn-primary btn btn-mine" data-bs-toggle="modal" data-bs-target="#EditModal<%= quest._id %>">
+                                <i class="fa-regular fa-pen-to-square"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="EditModal<%= quest._id %>" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog"><!-- modal-dialog-centered -->
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <h1 class="fw-bold modal-title fs-4 text-center" id="exampleModalLabel">Edit your Question</h1>
+                                    <form action="/contributor/editQuestion" method="post">
+                                        <div class="m-3">
+                                            <h5 class="dib">Subject&nbsp;:&nbsp;</h5>
+                                            <select name="subject" id="" class="dib form-control" style="width: auto;">
+                                                <% for(let i = 0; i < sub.length; i++){ %> 
+                                                    <% var selected = ( quest.Subject === sub[i] ) ? "selected" : ""; %>
+                                                    <option value="<%= sub[i] %>" <%= selected %>><%= sub[i] %></option>
+                                                <% } %> 
+                                            </select>
+                                            <br>
+                                            <h5 class="dib">Difficulty&nbsp;:&nbsp;</h5>
+                                            <% if(quest.Difficulty === 'Easy'){ %> 
+                                                <input checked type="radio" name="difficulty" id="easy" value="Easy"> <label for="easy">Easy</label>&nbsp;
+                                                <input type="radio" name="difficulty" id="medium" value="Medium"> <label for="medium">Medium</label>&nbsp;
+                                                <input type="radio" name="difficulty" id="hard" value="Hard"> <label for="hard">Hard</label>&nbsp;
+                                            <% }else if(quest.Difficulty === 'Medium'){ %> 
+                                                <input type="radio" name="difficulty" id="easy" value="Easy"> <label for="easy">Easy</label>&nbsp;
+                                                <input checked type="radio" name="difficulty" id="medium" value="Medium"> <label for="medium">Medium</label>&nbsp;
+                                                <input type="radio" name="difficulty" id="hard" value="Hard"> <label for="hard">Hard</label>&nbsp;
+                                            <% } else if(quest.Difficulty === 'Hard') { %> 
+                                                <input type="radio" name="difficulty" id="easy" value="Easy"> <label for="easy">Easy</label>&nbsp;
+                                                <input type="radio" name="difficulty" id="medium" value="Medium"> <label for="medium">Medium</label>&nbsp;
+                                                <input checked type="radio" name="difficulty" id="hard" value="Hard"> <label for="hard">Hard</label>&nbsp;
+                                            <% } else { %> 
+                                                <input type="radio" name="difficulty" id="easy" value="Easy"> <label for="easy">Easy</label>&nbsp;
+                                                <input type="radio" name="difficulty" id="medium" value="Medium"> <label for="medium">Medium</label>&nbsp;
+                                                <input type="radio" name="difficulty" id="hard" value="Hard"> <label for="hard">Hard</label>&nbsp;
+                                            <% } %> 
+                                            <br>
+                                            <h5 class="dib">Type&nbsp;:&nbsp;</h5>
+                                            <% if(quest.Type === 'Short'){ %> 
+                                                <input checked type="radio" name="type" id="short" value="Short"> <label for="short">Short</label>&nbsp;
+                                                <input type="radio" name="type" id="long" value="Long"> <label for="long">Long</label>&nbsp;
+                                            <% } else if(quest.Type === 'Long'){ %> 
+                                                <input type="radio" name="type" id="short" value="Short"> <label for="short">Short</label>&nbsp;
+                                                <input checked type="radio" name="type" id="long" value="Long"> <label for="long">Long</label>&nbsp;
+                                            <% } else { %> 
+                                                <input type="radio" name="type" id="short" value="Short"> <label for="short">Short</label>&nbsp;
+                                                <input type="radio" name="type" id="long" value="Long"> <label for="long">Long</label>&nbsp;
+                                            <% } %> 
+                                            <br>
+                                            <input type="text" name="id" id=""  value="<%= quest._id %>" hidden>
+                                            <textarea class="form-control mt-1" name="question" placeholder="Type the question here" id="floatingTextarea2" rows="6"><%= quest.Question %></textarea>
+                                        </div>
+                                        <div class="text-center m-3 "><input style="width: -webkit-fill-available;" type="submit"
+                                                value="Edit Question" class="btn btn-success text-center fs-5"></div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog"><!-- modal-dialog-centered -->
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h1 class="fw-bold modal-title fs-4 text-center" id="exampleModalLabel">Add your Question</h1>
+                    <form action="/contributor/addQuestion" method="post">
+                        <div class="m-3">
+                            <h5 class="dib">Subject&nbsp;:&nbsp;</h5>
+                            <select name="subject" id="" class="dib form-control" style="width: auto;">
+                                <option selected disabled value="">Select the subject</option>
+                                <% for(let i=0;i<sub.length;i++){ %> 
+                                    <option value="<%= sub[i] %>"><%= sub[i] %></option>
+                                <% } %>
+                            </select>
+                            <br>
+                            <h5 class="dib">Difficulty&nbsp;:&nbsp;</h5>
+                            <input type="radio" name="difficulty" id="easy" value="Easy"> <label for="easy">Easy</label>&nbsp;
+                            <input type="radio" name="difficulty" id="medium" value="Medium"> <label for="medium">Medium</label>&nbsp;
+                            <input type="radio" name="difficulty" id="hard" value="Hard"> <label for="hard">Hard</label>&nbsp;
+                            <br>
+                            <h5 class="dib">Type&nbsp;:&nbsp;</h5>
+                            <input type="radio" name="type" id="short" value="Short"> <label for="short">Short</label>&nbsp;
+                            <input type="radio" name="type" id="long" value="Long"> <label for="long">Long</label>&nbsp;
+                            <textarea class="form-control mt-1" name="question" placeholder="Type the question here" id="floatingTextarea2" rows="6"></textarea>
+                        </div>
+                        <div class="text-center m-3 "><input style="width: -webkit-fill-available;" type="submit" value="Add Question" class="btn btn-success text-center fs-5"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%- include("partials/footer") %>

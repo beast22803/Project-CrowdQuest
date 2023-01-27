@@ -1,0 +1,39 @@
+<%- include("partials/header",{ Condition: Condition, User: User }) %> 
+
+    <!-- ======= Hero Section ======= -->
+    <section id="hero" class="d-flex align-items-center">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 hero-img" data-aos="fade-left" data-aos-delay="200">
+                    <img src="img/happy-freelancer.png" class="img-fluid animated" alt="">
+                </div>
+                <div class="col-lg-6 pt-5 pt-lg-0 d-flex flex-column justify-content-center bor2" data-aos="fade-left" data-aos-delay="200">
+                    <div class="card shadow-lg p-3 mb-5 bg-body rounded cd-credentials" style="height: 25rem;">
+                        <div class="card-body">
+                            <h3 class="card-title dist">Login - User</h3>
+                            <p class="text-center" style="color: red;"><%= Message %></p>
+                            <form id="form" method="post" action="login"  class="row g-3 needs-validation dist justify-content-center" novalidate>
+                                <input type="text" name="email" placeholder="E-mail" required=""
+                                    class="form-control"><br />
+                                <input type="password" name="password" placeholder="Password" required=""
+                                    class="form-control"><br />
+                                <input type="submit" value="Login" class="btn btn-success">
+                            </form>
+                            <div id="LangTable"><a href="/profile" id="aa"></a>
+                            </div>
+                            <div class="dist">
+                                <span>Do you forgot password?</span><a href="/forgot">Click here</a>
+                                <div><span>Create a new Account?</span><a href="/register">Register here</a></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+    </section><!-- End Hero -->
+
+<%- include("partials/main") %>
+
+<%- include("partials/footer") %>

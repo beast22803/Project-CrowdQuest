@@ -1,0 +1,52 @@
+<%- include("partials/header",{ Condition: Condition, User: User }) %>
+<% let sub = ["PPS using C","Data Structures using C++","OOPs using C++","Java","Python","FLAT-Formal Languages and Automata Theory","Complier Designing","Computer Networks","Cloud Computing","IOT-Internet Of Things","Cryptography and Network Security","Machine Learning","UML and Design Patterns","DAA-Design Analysis Algorithms","AI-Artificial Intelligance"] %> 
+    <div class="row">
+        <div class="col-lg-2 shadow-sm" style="min-height: 55vmax;padding-top: 7%;text-align: center;" data-aos="fade-" data-aos-delay="10"><!--  data-aos="fade-right" data-aos-delay="10" was-validated -->
+            <div style="text-align: justify; margin: 10%;">
+                <form action="/student/search" method="post">
+                    <p class="fw-semibold fs-5 m-1">Difficulty</p>
+                    <!-- <h6>Difficulty</h6> -->
+                    <div class="ms-2">
+                        <input type="radio" name="difficulty" id="easy" value="Easy"> <label for="easy">Easy</label><br>
+                        <input type="radio" name="difficulty" id="medium" value="Medium"> <label for="medium">Medium</label><br>
+                        <input type="radio" name="difficulty" id="hard" value="Hard"> <label for="hard">Hard</label>
+                    </div>
+                    <p class="fw-semibold fs-5 m-1">Type</p>
+                    <!-- <h6>Type</h6> -->
+                    <div class="ms-2">
+                        <input type="radio" name="type" id="short" value="Short"> <label for="short">Short</label><br>
+                        <input type="radio" name="type" id="long" value="Long"> <label for="long">Long</label>
+                    </div>
+                    <p class="fw-semibold fs-5 m-1">Subject</p>
+                    <!-- <h6>Subject</h6> -->
+                    <div class="mb-3">
+                        <select name="subject" id="" class="dib form-control">
+                            <option selected disabled value="">Select the subject</option>
+                            <% for(let i=0;i<sub.length;i++){ %> 
+                                <option value="<%= sub[i] %>"><%= sub[i] %></option>
+                            <% } %>
+                        </select>
+                    </div>
+                    <button type="submit" class="linkCont btn">Search</button>
+                </form>
+            </div>
+        </div>
+        <div class="col-lg-10 mt-5 pt-5 mb-4">
+            <h2 class="text-center">Questions</h2>
+            <div class="question mt-4">
+                <% Questions.slice().reverse().forEach(function(quest){ %>
+                    <div class="card shadow bg-body rounded cd-mine"><!-- shadow-sm p-3 mb-5 bg-body -->
+                        <div class="card-body">
+                            <h5 class="card-title fontChange"> <%= quest.Question %> </h5>
+                            <h6 class="card-subtitle mt-2 text-muted fontChange"> <%= quest.Subject %> </h6>
+                        </div>
+                        <div class="card-footer">
+                            <span class="text-muted"><%= quest.Type %> &#x2022; <%= quest.Difficulty %></span>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+    </div>
+
+    <%- include("partials/footer") %>

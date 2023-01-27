@@ -1,0 +1,28 @@
+/*body,
+ table,
+    thead,
+    tr,
+    tbody,
+    th,
+    td {
+        text-align: center;
+    }*/
+body{
+	text-align: center !important;
+}
+p{
+	margin-top: 20px;
+	font-size: 30px;
+}
+input{
+	text-align: center;
+}
+.mssg{
+	margin-top: 5px;
+	margin-bottom: 5px;
+	border-radius: 5px;
+}
+.body-settings{
+    background-image:"C:\Users\REGULA SRILAKSHMI\Desktop\large-group-people-questions-thinking-concept-quest-answers-white-background-47087869.jpg";
+
+}

@@ -1,0 +1,63 @@
+<%- include("partials/header",{ Condition: Condition, User: User }) %>
+
+    <!-- ======= Hero Section ======= -->
+    <section id="hero" class="d-flex align-items-center">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 hero-img" data-aos="fade-left" data-aos-delay="200">
+                    <img src="img/happy-freelancer.png" class="img-fluid animated" alt="">
+                </div>
+                <div class="col-lg-6 pt-5 pt-lg-0 d-flex flex-column justify-content-center" data-aos="fade-left" data-aos-delay="200">
+                    <div class="card shadow-none p-3 mb-5 bg-body rounded cd-credentials" style="height: 35rem;">
+                        <div class="card-body">
+                            <h3 class="card-title dist">Register</h3>
+                            <form id="form1" method="post" action="register" class="row g-3 needs-validation dist justify-content-center" novalidate>
+                                <input type="email" name="email" placeholder="E-mail" required="" class="form-control"><br />
+                                <input type="text" name="username" placeholder="Username" required="" class="form-control"><br />
+                                <select name="role" id="role" class="form-control" onchange="toggle()" aria-placeholder="Hello">
+                                    <option selected disabled value="">Select your role</option>
+                                    <option value="contributor">Contributor</option>
+                                    <option value="subjectexpert">Subject Expert</option>
+                                    <option value="student">Student</option>
+                                </select><br>
+                                <select name="subject" id="cont" class="form-control" style="display:none;">
+                                    <option selected disabled value="">Select your expertise</option>
+                                        <option value="PPS using C">PPS using C</option>
+                                        <option value="Data Structures using C++">Data Structures using C++</option>
+                                        <option value="OOPs using C++">OOPs using C++</option>
+                                        <option value="Java">Java</option>
+                                        <option value="Python">Python</option>
+                                        <option value="FLAT-Formal Languages and Automata Theory">FLAT-Formal Languages and Automata Theory</option>
+                                        <option value="Complier Designing">Complier Designing</option>
+                                        <option value="Computer Networks">Computer Networks</option>
+                                        <option value="Cloud Computing">Cloud Computing</option>
+                                        <option value="IOT-Internet Of Things">IOT-Internet Of Things</option>
+                                        <option value="Cryptography and Network Security">Cryptography and Network Security </option>
+                                        <option value="Machine Learning">Machine Learning</option>
+                                        <option value="UML and Design Patterns">UML and Design Patterns</option>
+                                        <option value="DAA-Design Analysis Algorithms">DAA-Design Analysis Algorithms</option>
+                                        <option value="AI-Artificial Intelligance">AI-Artificial Intelligance</option>
+                                </select><br>
+                                <input type="password" name="password" placeholder="Password" required="" class="form-control pwd"><br />
+                                <input type="password" name="passwordConf" placeholder="Confirm Password" required="" class="form-control"><br />
+                                <input type="submit" value="Register" class="btn btn-success">
+                            </form>
+                            <div class="mssg bg-danger">
+                                <span id="check"></span>
+                            </div>
+                            <div class="dist">
+                                <span>Already Registered! <a href="/login">Login</a></span>
+                            </div>
+                            <div id="LangTable"><a href="/login" id="aa"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section><!-- End Hero -->
+
+<%- include("partials/main") %>
+<%- include("partials/footer") %>

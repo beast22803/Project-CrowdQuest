@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>CrowdQuest</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="/img/test.svg" rel="icon">
+  <link href="/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Offside&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="/vendor/aos/aos.css" rel="stylesheet">
+  <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+  <script defer src="https://use.fontawesome.com/releases/v6.2.1/js/all.js"></script>
+
+  <!-- Template Main CSS File -->
+  <link href="/css/style.css" rel="stylesheet" media="all">
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top d-flex align-items-center ">
+    <div class="container d-flex align-items-center justify-content-between">
+
+      <div class="logo">
+        <h1><a href="/">CrowdQuest</a></h1>
+      </div>
+
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a class="nav-link scrollto" href="/">Home</a></li>
+          <li><a class="nav-link scrollto" href="#about">About</a></li>
+          <% if(!Condition){ %> 
+            <li><a class="nav-link scrollto" href="/login">Contributr</a></li>
+          <% } else{ %> 
+            
+          <% } %> 
+          <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
+          <% if(!Condition){ %> 
+            <li><a class="getstarted scrollto" href="login">Login</a></li>
+          <% } else{ %> 
+            <div class="dropdown">
+              <a class="getstarted scrollto">Hi, <%= User.UserName %></a>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                <li>
+                  <form action="/<%= User.Role %>/search" method="post">
+                    <button class="dropdown-item" type="submit"><i class="fa-solid fa-house"></i>&nbsp;DashBoard</button>
+                  </form>
+                </li>
+                <li>
+                  <form action="/logoout" method="post">
+                    <button type="submit" class="dropdown-item"><i class="fa-solid fa-right-from-bracket"></i>&nbsp;Logout</button>
+                  </form>
+                </li>
+              </ul>
+            </div>
+          <% } %> 
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+
+    </div>
+  </header><!-- End Header -->
