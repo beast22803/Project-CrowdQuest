@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState , useEffect } from "react";
 import Axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -13,36 +14,56 @@ function Contributor(){
     const sub = ["PPS using C", "Data Structures using C++", "OOPs using C++", "Java", "Python", "FLAT-Formal Languages and Automata Theory", "Complier Designing", "Computer Networks", "Cloud Computing", "IOT-Internet Of Things", "Cryptography and Network Security", "Machine Learning", "UML and Design Patterns", "DAA-Design Analysis Algorithms", "AI-Artificial Intelligance"]
 
     const submit = () => {
-        if(_.isEmpty(User)){
-            // alert("Not logged in");
-            navigate("/login");
-        } else{
-            addQuestion.UserID = User._id;
-            console.log(addQuestion);
-            console.log(User);
-            Axios.post("http://localhost:3001/Contributor/addQuestion",addQuestion);
-            window.location.reload(false);
-        }
+        Axios.get("http://localhost:3001/userInfo").then((res) => {
+            console.log(res.data.User);
+            if(_.isEmpty(res.data.User)){
+                // alert("Not logged in");
+                navigate("/login");
+            } else{
+                addQuestion.UserID = res.data.User._id;
+                console.log(addQuestion);
+                console.log(res.data.User);
+                Axios.post("http://localhost:3001/Contributor/addQuestion",addQuestion);
+                window.location.reload(false);
+            }
+        })
     }
 
     const handleChange = ({currentTarget: input}) => {
         setAddQuestion({...addQuestion,[input.name]: input.value});
     }
 
-    const handleFilterChange = ({currentTarget: input}) => {
-        setFilter({...filter,[input.name]: input.value});
-        Axios.post("http://localhost:3001/Contributor/search",filter).then((res)=>{
-            setAllQuestions(res.data.questions);
-        })
-    }
+    const handleFilterChange = ({ currentTarget: input }) => {
+    
+        setFilter((prevState) => {
+            // Use the updated state
+            const newFilter = { ...prevState, [input.name]: input.value };
+            
+            // Make API call inside the setState function to ensure the latest state is used
+            Axios.post("http://localhost:3001/Contributor/search", newFilter)
+                .then((res) => {
+                    setAllQuestions(res.data.questions);
+                })
+                .catch((err) => {
+                    console.error("Error fetching questions:", err);
+                });
+            
+            return newFilter;
+        });
+    };
+    
 
     useEffect(()=>{
         Axios.get("http://localhost:3001/Contributor").then((res)=>{
+            console.log(res.data.message);
+            
             if(res.data.auth){
                 // alert(res.data.message);
                 if(res.data.questions === undefined){
                     setAllQuestions([]);
                 } else{
+                    console.log(res.data);
+                    
                     setAllQuestions(res.data.questions);
                 }
                 setUser(res.data.user);
@@ -50,7 +71,11 @@ function Contributor(){
                 navigate("/login");
             }
         },)
-    }, []);
+
+        Axios.get("http://localhost:3001/userInfo").then((res) => {
+            setUser(res.data.User)
+        })
+    }, [navigate]);
 
     const update = (id) => {
         console.log(id);

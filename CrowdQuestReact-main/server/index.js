@@ -10,7 +10,7 @@ const User = require("./models/user");
 const Question = require("./models/questions");
 const { result } = require("lodash");
 
-mongoose.connect("mongodb://localhost:27017/crowdquestDB", {useNewUrlParser: true, useUnifiedTopology: true} , console.log("Connect"));
+mongoose.connect("mongodb+srv://varshitmadi:beast22803@cluster0.onppigu.mongodb.net/cqDB", {useNewUrlParser: true, useUnifiedTopology: true} , console.log("Connect"));
 
 app.use(express.json());
 app.use(cors());
@@ -139,6 +139,8 @@ app.post("/register",(req,res)=>{
 });
 
 app.post("/Contributor/addQuestion",function(req,res){
+    console.log(req.body);
+    
     req.body.AppRej = -1;
     // console.log(req.body);
     const question = new Question(req.body);
@@ -147,15 +149,15 @@ app.post("/Contributor/addQuestion",function(req,res){
 
 app.get("/Contributor",auth,(req,res)=>{
     // console.log(req.body);
+    console.log(user);
     Question.find({UserID: user._id},(err,result)=>{
         if(result.length !== 0){
-            // console.log(result);
             res.send( {message:"Found", questions: result, auth: true, user: user });
         } else{
             if(_.isEmpty(user)){
                 res.send( { message: "Not logged in" });
             } else{
-                res.send( { message: "Did not yet posted any questions", auth: true});
+                res.send( { message: "Did not yet posted any questions", auth: true, user: user});
             }
         }
     });

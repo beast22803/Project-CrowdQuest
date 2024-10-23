@@ -29,6 +29,7 @@ function ContriEditQuestion(){
         console.log(updQuestion);
         Axios.post("http://localhost:3001/Contributor/updQuestion",updQuestion);
         navigate("/Contributor");
+        window.location.reload();
     }
 
     const checkDiff = () => {

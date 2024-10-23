@@ -7,7 +7,7 @@ const mongoose = require("mongoose");
 const ejs = require("ejs");
 const _ = require('lodash');
 
-mongoose.connect("mongodb://localhost:27017/cqDB", {useNewUrlParser: true, useUnifiedTopology: true}, console.log("Connected to Databse"));
+mongoose.connect("mongodb+srv://varshitmadi:beast22803@cluster0.onppigu.mongodb.net/cqDB", {useNewUrlParser: true, useUnifiedTopology: true}, console.log("Connected to Databse"));
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 
