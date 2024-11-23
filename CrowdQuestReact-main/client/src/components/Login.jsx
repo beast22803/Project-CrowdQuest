@@ -15,6 +15,8 @@ function Login() {
             email: email,
             password: password
         }).then(res => {
+            console.log(res.data);
+            
             alert(res.data.message);
             navigate("/"+res.data.user.Role);
         });

@@ -17,13 +17,13 @@ function Contributor(){
         Axios.get("http://localhost:3001/userInfo").then((res) => {
             console.log(res.data.User);
             if(_.isEmpty(res.data.User)){
-                // alert("Not logged in");
+                alert("Not logged in");
                 navigate("/login");
             } else{
                 addQuestion.UserID = res.data.User._id;
                 console.log(addQuestion);
                 console.log(res.data.User);
-                Axios.post("http://localhost:3001/Contributor/addQuestion",addQuestion);
+                Axios.post("http://localhost:3001/contributor/addQuestion",addQuestion);
                 window.location.reload(false);
             }
         })
@@ -40,7 +40,7 @@ function Contributor(){
             const newFilter = { ...prevState, [input.name]: input.value };
             
             // Make API call inside the setState function to ensure the latest state is used
-            Axios.post("http://localhost:3001/Contributor/search", newFilter)
+            Axios.post("http://localhost:3001/contributor/search", newFilter)
                 .then((res) => {
                     setAllQuestions(res.data.questions);
                 })
@@ -54,7 +54,7 @@ function Contributor(){
     
 
     useEffect(()=>{
-        Axios.get("http://localhost:3001/Contributor").then((res)=>{
+        Axios.get("http://localhost:3001/contributor").then((res)=>{
             console.log(res.data.message);
             
             if(res.data.auth){
@@ -73,6 +73,8 @@ function Contributor(){
         },)
 
         Axios.get("http://localhost:3001/userInfo").then((res) => {
+            console.log(res.data);
+            
             setUser(res.data.User)
         })
     }, [navigate]);

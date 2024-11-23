@@ -8,7 +8,7 @@ function Admin(){
     let [allUsers, setAllUsers] = useState([]);
 
     useEffect(()=>{
-        Axios.get("http://localhost:3001/Admin").then((res)=>{
+        Axios.get("http://localhost:3001/admin").then((res)=>{
             if(res.data.auth){
                 if(res.data.users === undefined){
                     setAllUsers([]);
@@ -24,13 +24,13 @@ function Admin(){
 
     const approve = (id) => {
         console.log(id);
-        Axios.post(`http://localhost:3001/Admin/approve/${id}`);
+        Axios.post(`http://localhost:3001/admin/approve/${id}`);
         window.location.reload(false);
     }
 
     const reject = (id) => {
         console.log(id);
-        Axios.post(`http://localhost:3001/Admin/reject/${id}`);
+        Axios.post(`http://localhost:3001/admin/reject/${id}`);
         window.location.reload(false);
     }
 

@@ -466,9 +466,29 @@ h6 {
   }
 }
 
+@media (max-width: 1024px) {
+  #hero {
+    background-attachment: fixed;
+  }
+
+  .linkCont {
+    width: 8rem;
+  }
+}
+
 @media (max-width: 991px) {
   #hero {
-    height: 100vh;
+    height: 70vh;
+  }
+
+  .linkCont {
+    width: 12rem;
+  }
+
+  .cd-credentials {
+    left: 0;
+    width: auto;
+    margin: 0rem 1rem;
   }
 
   #hero .animated {
@@ -1317,6 +1337,11 @@ section {
   opacity: 1;
 }
 
+.teamImg {
+  height: 30vh;
+  width: 50vw;
+}
+
 /*--------------------------------------------------------------
 # Pricing
 --------------------------------------------------------------*/
@@ -1617,6 +1642,15 @@ section {
 @media (max-width: 992px) {
   .breadcrumbs {
     margin-top: 72px;
+  }
+
+  .teamImg {
+    width: 60vw;
+  }
+
+  .cd-mine {
+    width: 93vw;
+    margin: 1rem 1rem;
   }
 }
 

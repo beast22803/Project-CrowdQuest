@@ -2,6 +2,7 @@ import React from "react";
 import {
   createBrowserRouter,
   RouterProvider,
+  Navigate
 } from "react-router-dom";
 import Login from "./components/Login";
 import Register from "./components/Register";
@@ -24,28 +25,32 @@ function App() {
       element: <Register />
     },
     {
-      path: "/Contributor",
+      path: "/contributor",
       element: <Contributor />
     },
     {
-      path: "/Student",
+      path: "/student",
       element: <Student />
     },
     {
-      path: "/SubjectExpert",
+      path: "/subjectexpert",
       element: <SubExp />
     },
     {
-      path: "/Contributor/editQuestion",
+      path: "/contributor/editQuestion",
       element: <ContriEditQuestion />
     },
     {
-      path: "/Admin",
+      path: "/admin",
       element: <Admin />
     },
     {
-      path: "/Forget",
+      path: "/forget",
       element: <Forget />
+    },
+    {
+      path: "/*", 
+      element: <Navigate to="/login" />
     }
   ]);
   return (

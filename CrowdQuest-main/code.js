@@ -212,10 +212,8 @@ app.post("/login",function(req,res){
                     res.redirect("/student");
                 }
             } else{
-                // alert("Wrong password");
-                popup.alert({
-                    content: 'Hello!'
-                });
+                msg="Wrong password";
+                return res.redirect("/login");
             }
         }
     });

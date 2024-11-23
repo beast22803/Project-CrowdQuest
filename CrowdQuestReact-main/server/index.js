@@ -26,7 +26,6 @@ const admin = new User({
 
 function auth(req,res,next){
     if(token !== undefined){
-
         jwt.verify(token,process.env.ACESS_TOKEN,(err,verified)=>{
             if(err) return res.status(404).send("Token not verified");
             req.user = verified;
@@ -90,30 +89,34 @@ function auth4(req,res,next){
 }
 
 app.get("/userInfo",(req,res) => {
+    console.log("1");
     res.send({ User : user});
 });
 
 app.post("/login",(req,res)=>{
-    // console.log(req.body);
+    console.log(req.body);
     User.findOne({ Email: req.body.email}, (err, result) => {
         // console.log(result);
         if(result){
             if(req.body.password === result.Password ) {
-                // console.log(result);
-                if(result.Role ===  "SubjectExpert" && result.AppRejUser === -1){
+                user = result;
+                if(result.Role ===  "subjectexpert" && result.AppRejUser === -1){
                     res.send({message: "You are not approved by the Admin"});
                 } else{
                     user=result;
+                    console.log(user);
+                    
                     // token = jwt.sign({result} , process.env.ACESS_TOKEN);
-                    if(user.Role === "SubjectExpert" && user.AppRejUser === 1){
+                    if(user.Role === "subjectexpert" && user.AppRejUser === 1){
                         token2 = jwt.sign({result} , process.env.ACESS_TOKEN);
-                    } else if(user.Role === "Contributor"){
+                    } else if(user.Role === "contributor"){
                         token = jwt.sign({result} , process.env.ACESS_TOKEN);
-                    } else if(user.Role === "Admin"){
+                    } else if(user.Role === "admin"){
                         token4 = jwt.sign({result} , process.env.ACESS_TOKEN);
-                    } else if(user.Role === "Student"){
+                    } else if(user.Role === "student"){
                         token3 = jwt.sign({result} , process.env.ACESS_TOKEN);
                     }
+
                     res.send({message: "Login Successfull", user: result})
                 }
             } else {
@@ -267,9 +270,9 @@ app.post("/Student/search",(req,res)=>{
     })
 });
 
-app.get("/Admin",auth4,(req,res)=>{
+app.get("/admin",auth4,(req,res)=>{
     let userSearch={
-        Role: "SubjectExpert",
+        Role: "subjectexpert",
         AppRejUser: -1
     };
     User.find(userSearch,(err,result)=>{
@@ -280,14 +283,14 @@ app.get("/Admin",auth4,(req,res)=>{
     })
 })
 
-app.post("/Admin/approve/:id",(req,res)=>{
+app.post("/admin/approve/:id",(req,res)=>{
     // console.log(req.params.id);
     User.updateOne({_id: req.params.id},{AppRejUser: 1},(err)=>{
         if(err) throw err;
     });
 });
 
-app.post("/Admin/reject/:id",(req,res)=>{
+app.post("/admin/reject/:id",(req,res)=>{
     // console.log(req.params.id);
     User.updateOne({_id: req.params.id},{AppRejUser: 0},(err)=>{
         if(err) throw err;
