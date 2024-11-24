@@ -398,18 +398,40 @@ app.post('/admin/dashboard', async (req, res) => {
 app.post("/admin/approve",function(req,res){
     User.updateOne({_id: req.body.id},{
             AppRejUser: 1
-        },function(err){
+        }, async function(err){
             if(err) throw err;
-            else{ res.redirect("/admin"); }
+            else { 
+                if (currentPage === "accountRequests") {
+                    copy = await User.find({ Role: "subjectexpert", AppRejUser: -1 });
+                } else if (currentPage === "accountDirectory") {
+                    copy = await User.find({});
+                } else if (currentPage === "questionDirectory") {
+                    copy = await Question.find({});
+                }
+        
+                req.copy = copy;
+                res.redirect("/admin"); 
+            }
     });
 })
 
 app.post("/admin/reject",function(req,res){
     User.updateOne({_id: req.body.id},{
         AppRejUser: 0
-        },function(err){
+        }, async function(err){
             if(err) throw err;
-            else{ res.redirect("/admin"); }
+            else { 
+                if (currentPage === "accountRequests") {
+                    copy = await User.find({ Role: "subjectexpert", AppRejUser: -1 });
+                } else if (currentPage === "accountDirectory") {
+                    copy = await User.find({});
+                } else if (currentPage === "questionDirectory") {
+                    copy = await Question.find({});
+                }
+        
+                req.copy = copy;
+                res.redirect("/admin"); 
+            }
     });
 });
 
@@ -417,20 +439,42 @@ app.post('/admin/delete', (req, res) => {
     const userId = req.body.id;
 
     if(currentPage === "questionDirectory") {
-        Question.findByIdAndDelete(userId, (err) => {
+        Question.findByIdAndDelete(userId, async (err) => {
             if (err) {
                 return res.status(500).send('Failed to delete the user.');
             }
+            copy = await Question.find({});
             res.redirect('/admin');
         });
     } else {
-        User.findByIdAndDelete(userId, (err) => {
+        User.findByIdAndDelete(userId, async (err) => {
             if (err) {
                 return res.status(500).send('Failed to delete the user.');
             }
+            copy = await User.find({});
             res.redirect('/admin');
         });
     }
+});
+
+app.post("/admin/block", function(req,res){
+    User.updateOne({_id: req.body.id},{
+        AppRejUser: -1
+        }, async function(err){
+            if(err) throw err;
+            else { 
+                if (currentPage === "accountRequests") {
+                    copy = await User.find({ Role: "subjectexpert", AppRejUser: -1 });
+                } else if (currentPage === "accountDirectory") {
+                    copy = await User.find({});
+                } else if (currentPage === "questionDirectory") {
+                    copy = await Question.find({});
+                }
+        
+                req.copy = copy;
+                res.redirect("/admin"); 
+            }
+    });
 });
 
 app.post("/admin/search",function(req,res){

@@ -97,6 +97,15 @@
                                                         quest.Role==="subjectexpert" ? "Subject Expert" : "Student" %>
                                                 </td>
                                                 <td class="text-center">
+                                                    <% if(quest.Role === "subjectexpert" && quest.AppRejUser != -1) { %>
+                                                        <form action="/admin/block" method="post" style="margin-right: 0.5rem;">
+                                                            <input type="text" name="id" id="" value="<%= quest._id %>"
+                                                                hidden>
+                                                            <button type="submit" class="dangerBtn warnBtn">Block</button>
+                                                        </form>
+                                                    <% } %>
+                                                </td>
+                                                <td class="text-center">
                                                     <form action="/admin/delete" method="post">
                                                         <input type="text" name="id" id="" value="<%= quest._id %>"
                                                             hidden>

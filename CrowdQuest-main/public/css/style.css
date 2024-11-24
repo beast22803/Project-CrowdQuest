@@ -72,6 +72,11 @@ h6 {
   transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
 
+.warnBtn {
+  background-color: #ffc107;
+  border-color: #ffc107;
+}
+
 .cd-credentials {
   margin-top: 10%;
   border: none;
