@@ -1,36 +1,151 @@
-<%- include("partials/header",{ Condition: Condition, User: User }) %>
+<%- include("partials/header", { Condition: Condition, User: User }) %>
 
-<div class="row">
-    <div class=" mt-5 pt-5 mb-4">
-        <h2 class="text-center">Account Request</h2>
-        <div class="question mt-4">
-            <% Users.forEach(function(quest){ %>
-                <% if(quest.AppRejUser === -1){ %> 
-                    <div class="card shadow bg-body rounded cd-mine"><!-- shadow-sm p-3 mb-5 bg-body -->
-                        <div class="card-body">
-                            <h5 class="card-title fontChange"> <%= quest.UserName %> </h5>
-                        </div>
-                        <div class="card-footer" style="float: right;">
-                            <span class="text-muted"><%= quest.Subject %> &#x2022; <%= quest.Email %></span>
-                            <form action="/admin/reject" method="post" style="float: right;">
-                                <input type="text" name="id" id=""  value="<%= quest._id %>" hidden>
-                                <button type="submit" style="margin-left: 20%;" class="btn-primary btn btn-mine">
-                                    <i class="fa-solid fa-xmark"></i>
-                                </button>
-                            </form>
-                            <form action="/admin/approve" method="post" style="float: right;">
-                                <input type="text" name="id" id=""  value="<%= quest._id %>" hidden>
-                                <button type="submit" class="btn-primary btn btn-mine">
-                                    <i class="fa-solid fa-check"></i>
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                <% } %> 
-            <% }) %>
+    <div class="row">
+        <div class="col-lg-2 shadow-sm mt-xl-0 mt-5" style="min-height: 55vmax;padding-top: 7%;text-align: center;"
+            data-aos="fade-right" data-aos-delay="10">
+            <h4 class="fw-semibold fs-5 m-1">Controls</h4>
+            <div class="mt-4">
+                <form action="/admin/dashboard" method="POST" style="display: inline;">
+                    <input type="hidden" name="currentPage" value="accountRequests">
+                    <button type="submit"
+                        class="mt-1 mb-1 <%= currentPage === 'accountRequests' ? 'unlinkCont' : 'linkCont btn' %>">Account
+                        Requests</button>
+                </form>
+
+                <form action="/admin/dashboard" method="POST" style="display: inline;">
+                    <input type="hidden" name="currentPage" value="accountDirectory">
+                    <button type="submit"
+                        class="mt-1 mb-1 <%= currentPage === 'accountDirectory' ? 'unlinkCont' : 'linkCont btn' %>">Account
+                        Directory</button>
+                </form>
+
+                <form action="/admin/dashboard" method="POST" style="display: inline;">
+                    <input type="hidden" name="currentPage" value="questionDirectory">
+                    <button type="submit"
+                        class="mt-1 mb-1 <%= currentPage === 'questionDirectory' ? 'unlinkCont' : 'linkCont btn' %>">Question
+                        Directory</button>
+                </form>
+            </div>
+
         </div>
+
+        <div class="col-lg-10 mt-5 pt-5 mb-4">
+            <% if(currentPage=="" ) { %>
+                <p class="text-center">Please select a control by clicking the buttons.</p>
+                <% } else if (currentPage==='accountRequests' ) { %>
+                    <h2 class="text-center">Account Requests</h2>
+                    <div class="question mt-4">
+                        <% Users.forEach(function(quest){ %>
+                            <% if(quest.AppRejUser===-1){ %>
+                                <div class="card shadow bg-body rounded cd-mine"><!-- shadow-sm p-3 mb-5 bg-body -->
+                                    <div class="card-body">
+                                        <h5 class="card-title fontChange">
+                                            <%= quest.UserName %>
+                                        </h5>
+                                    </div>
+                                    <div class="card-footer" style="float: right;">
+                                        <span class="text-muted">
+                                            <%= quest.Subject %> &#x2022; <%= quest.Email %>
+                                        </span>
+                                        <form action="/admin/reject" method="post" style="float: right;">
+                                            <input type="text" name="id" id="" value="<%= quest._id %>" hidden>
+                                            <button type="submit" style="margin-left: 20%;"
+                                                class="btn-primary btn btn-mine">
+                                                <i class="fa-solid fa-xmark"></i>
+                                            </button>
+                                        </form>
+                                        <form action="/admin/approve" method="post" style="float: right;">
+                                            <input type="text" name="id" id="" value="<%= quest._id %>" hidden>
+                                            <button type="submit" class="btn-primary btn btn-mine">
+                                                <i class="fa-solid fa-check"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                                <% } %>
+                                    <% }) %>
+                    </div>
+                    <% } else if (currentPage==='accountDirectory' ) { %>
+                        <h2 class="text-center">Account Directory</h2>
+                        <div class="table-responsive mt-4 mx-3">
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>User Name</th>
+                                        <th>Subject</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% Users.forEach(function(quest){ %>
+                                        <% if(quest.Role !=="admin" ) { %>
+                                            <tr>
+                                                <td>
+                                                    <%= quest.UserName %>
+                                                </td>
+                                                <td>
+                                                    <%= quest.Role==="subjectexpert" ? (quest.Subject ? quest.Subject
+                                                        : "N/A" ) : "" %>
+                                                </td>
+                                                <td>
+                                                    <%= quest.Email %>
+                                                </td>
+                                                <td>
+                                                    <%= quest.Role==="contributor" ? "Contributor" :
+                                                        quest.Role==="subjectexpert" ? "Subject Expert" : "Student" %>
+                                                </td>
+                                                <td class="text-center">
+                                                    <form action="/admin/delete" method="post">
+                                                        <input type="text" name="id" id="" value="<%= quest._id %>"
+                                                            hidden>
+                                                        <button type="submit" class="dangerBtn">Delete</button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                            <%}%>
+                                                <% }) %>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <% } else if (currentPage==='questionDirectory' ) { %>
+                            <h2 class="text-center">Question Directory</h2>
+                            <div class="table-responsive mt-4 mx-3">
+                                <table class="table table-striped table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Subject</th>
+                                            <th>Type</th>
+                                            <th>Difficulty</th>
+                                            <th>Question</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% Users.forEach(function(quest){ %>
+                                            <tr>
+                                                <td><%= quest.Subject %></td>
+                                                <td><%= quest.Type %></td>
+                                                <td><%= quest.Difficulty %></td>
+                                                <td><%= quest.Question %></td>
+                                                <td class="text-center">
+                                                    <form action="/admin/delete" method="post">
+                                                        <input type="text" name="id" id="" value="<%= quest._id %>" hidden>
+                                                        <button type="submit" class="dangerBtn">Delete</button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        <% }) %>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            
+                            <% } %>
+        </div>
+
     </div>
-</div>
 
-
-<%- include("partials/footer") %>
+    <%- include("partials/footer") %>

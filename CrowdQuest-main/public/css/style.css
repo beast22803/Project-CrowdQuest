@@ -36,22 +36,43 @@ h6 {
 # Mine
 --------------------------------------------------------------*/
 
-.dist{
+.dist {
   margin: 5%;
   text-align: center;
 }
 
-.btn{
+.btn {
   border: none;
   width: 30%;
   background-color: #3498db;
 }
 
-.btn:hover{
+.btn:hover {
   background-color: #5faee3;
 }
 
-.cd-credentials{
+.dangerBtn {
+  color: #fff;
+  background-color: #dc3545;
+  border-color: #dc3545;
+  display: inline-block;
+  font-weight: 400;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  border: 1px solid transparent;
+  padding: .375rem .75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: .25rem;
+  transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.cd-credentials {
   margin-top: 10%;
   border: none;
   width: 30rem;
@@ -60,14 +81,14 @@ h6 {
   left: 25%;
 }
 
-.cd-mine{
+.cd-mine {
   border: none;
   width: 60vw;
   /* height: 20vh; */
   margin: 1% auto;
 }
 
-.w3-sidebar{
+.w3-sidebar {
   padding: 1%;
   background-color: #2383c4;
   color: #fff;
@@ -75,25 +96,43 @@ h6 {
   display: inline-block;
 }
 
-.linkCont{
+.linkCont {
   color: #fff;
   width: 12rem;
+  /* cursor: pointer; */
   margin: 2%;
 }
 
-.linkCont:hover{
+.linkCont:hover {
   color: #fff;
 }
 
-.dib{
+.unlinkCont {
+  background-color: #ffffff;
+  border: 1.3px solid #3498db;
+  color: #3498db;
+  width: 12rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.375rem;
+  cursor: none;
+  text-align: center;
+}
+
+.unlinkCont:hover {
+  background-color: #3498db;
+  color: #ffffff;
+  /* White text when hovered */
+}
+
+.dib {
   display: inline-block;
 }
 
-.fontChange{
+.fontChange {
   font-family: 'Open Sans', cursive;
 }
 
-.btn-mine{
+.btn-mine {
   width: auto;
   /* height: auto; */
   border: none;

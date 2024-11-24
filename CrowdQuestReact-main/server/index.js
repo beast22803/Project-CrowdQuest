@@ -104,7 +104,6 @@ app.post("/login",(req,res)=>{
                     res.send({message: "You are not approved by the Admin"});
                 } else{
                     user=result;
-                    console.log(user);
                     
                     // token = jwt.sign({result} , process.env.ACESS_TOKEN);
                     if(user.Role === "subjectexpert" && user.AppRejUser === 1){
@@ -113,7 +112,7 @@ app.post("/login",(req,res)=>{
                         token = jwt.sign({result} , process.env.ACESS_TOKEN);
                     } else if(user.Role === "admin"){
                         token4 = jwt.sign({result} , process.env.ACESS_TOKEN);
-                    } else if(user.Role === "student"){
+                    } else if(user.Role === "Student"){
                         token3 = jwt.sign({result} , process.env.ACESS_TOKEN);
                     }
 
@@ -270,18 +269,18 @@ app.post("/Student/search",(req,res)=>{
     })
 });
 
-app.get("/admin",auth4,(req,res)=>{
-    let userSearch={
-        Role: "subjectexpert",
-        AppRejUser: -1
-    };
-    User.find(userSearch,(err,result)=>{
-        if(result){
-            // console.log(result);
-            res.send({users: result,auth: true, user: user});
-        }
-    })
-})
+// app.get("/admin",auth4,(req,res)=>{
+//     let userSearch={
+//         Role: "subjectexpert",
+//         AppRejUser: -1
+//     };
+//     User.find(userSearch,(err,result)=>{
+//         if(result){
+//             // console.log(result);
+//             res.send({users: result,auth: true, user: user});
+//         }
+//     })
+// })
 
 app.post("/admin/approve/:id",(req,res)=>{
     // console.log(req.params.id);
@@ -297,11 +296,81 @@ app.post("/admin/reject/:id",(req,res)=>{
     });
 });
 
+app.post("/admin/block/:id",(req,res)=>{
+    console.log(req.params.id);
+    User.updateOne({_id: req.params.id},{AppRejUser: -1},(err)=>{
+        if(err) throw err;
+    });
+});
+
 app.post("/forget",(req,res)=>{
     // console.log(req.body);
     User.updateOne({Email: req.body.email},{Password: req.body.password},(err)=>{
         if(err) throw err;
     })
 });
+
+
+app.post('/admin/delete/:id', (req, res) => {
+    const userId = req.params.id;
+    console.log(req.params.id);
+    
+    
+    if(currentPage === "questionDirectory") {
+        Question.findByIdAndDelete(userId, (err) => {
+            if (err) {
+                return res.status(500).send('Failed to delete the user.');
+            }
+            res.redirect('/admin');
+        });
+    } else {
+        User.findByIdAndDelete(userId, (err) => {
+            if (err) {
+                return res.status(500).send('Failed to delete the user.');
+            }
+            res.redirect('/admin');
+        });
+    }
+});
+
+let currentPage = "", copy = [];
+
+app.get("/admin", auth4, function (req, res) {
+    
+    res.send({
+        auth: true,
+        user: user,
+        users: copy,
+        currentPage: currentPage
+    });
+});
+
+app.post('/admin/dashboard', async (req, res) => {
+    currentPage = req.body.currentPage || '';
+    try {
+        if (currentPage === "accountRequests") {
+            copy = await User.find({ Role: "subjectexpert", AppRejUser: -1 });
+        } else if (currentPage === "accountDirectory") {
+            copy = await User.find({});
+        } else if (currentPage === "questionDirectory") {
+            copy = await Question.find({});
+        }
+
+        res.send({
+            user: user,
+            success: true,
+            message: `Data for ${currentPage} fetched successfully`,
+            users: copy,
+            currentPage: currentPage
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({
+            success: false,
+            message: "An error occurred while fetching data."
+        });
+    }
+});
+
 
 app.listen(3001,console.log("Server is running at port 3000"));

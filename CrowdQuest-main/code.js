@@ -46,7 +46,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static("public"));
 
 let regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-let condition = false,user = {},quest=[],search={},searchResult={},copy={},msg="";
+let condition = false,user = {},quest=[],search={},searchResult={},copy=[],msg="";
 var token = undefined, token2 = undefined, token3 = undefined, token4 = undefined;
 const admin = new User({
     Email: "admin@gmail.com",
@@ -108,16 +108,6 @@ app.get("/subjectexpert",auth,function(req,res){
             }
         }
         res.render("subjectexpert",{Condition: condition,User: user,Questions: quest,Users: copy});
-    });
-});
-
-app.get("/admin",auth3,function(req,res){
-    User.find({Role: "subjectexpert"},function(err,result){
-        if(err) throw err;
-        else{
-            copy=result;
-        }
-        res.render("admin",{Condition: condition,User: user,Users: copy});
     });
 });
 
@@ -198,9 +188,14 @@ app.post("/login",function(req,res){
             if(req.body.password === result.Password){
                 user = result;
                 condition = true;
-                if(user.Role === "subjectexpert" && user.AppRejUser === 1){
-                    token = jwt.sign({result} , process.env.ACESS_TOKEN);
-                    res.redirect("/subjectexpert");
+                if(user.Role === "subjectexpert"){
+                    if(user.AppRejUser === 1) {
+                        token = jwt.sign({result} , process.env.ACESS_TOKEN);
+                        res.redirect("/subjectexpert");
+                    } else {
+                        msg = "You needed to be verified by the Admin"
+                        return res.redirect("/login");
+                    }
                 } else if(user.Role === "contributor"){
                     token2 = jwt.sign({result} , process.env.ACESS_TOKEN);
                     res.redirect("/contributor");
@@ -252,6 +247,7 @@ app.post("/logoout",function(req,res){
     token2 = undefined;
     token3 = undefined;
     token4 = undefined;
+    currentPage = "";
     
     res.redirect("/");
 });
@@ -365,6 +361,40 @@ app.post("/subjectexpert/search",function(req,res){
     }
 });
 
+let currentPage = "";
+app.get("/admin", auth3, function(req, res) {
+    
+    res.render("admin", {
+        Condition: condition,
+        User: user,
+        Users: copy,
+        currentPage: currentPage
+    });
+});
+
+app.post('/admin/dashboard', async (req, res) => {
+    currentPage = req.body.currentPage || '';
+    
+    try {
+        if (currentPage === "accountRequests") {
+            copy = await User.find({ Role: "subjectexpert", AppRejUser: -1 });
+        } else if (currentPage === "accountDirectory") {
+            copy = await User.find({});
+        } else if (currentPage === "questionDirectory") {
+            copy = await Question.find({});
+        }
+
+        // Store the `copy` data in the session for access in the GET route
+        req.copy = copy;
+        
+        // Redirect to /admin to trigger the GET request and render the page
+        res.redirect("/admin");
+    } catch (err) {
+        console.log(err);
+        res.status(500).send("An error occurred while fetching data.");
+    }
+});
+
 app.post("/admin/approve",function(req,res){
     User.updateOne({_id: req.body.id},{
             AppRejUser: 1
@@ -381,6 +411,26 @@ app.post("/admin/reject",function(req,res){
             if(err) throw err;
             else{ res.redirect("/admin"); }
     });
+});
+
+app.post('/admin/delete', (req, res) => {
+    const userId = req.body.id;
+
+    if(currentPage === "questionDirectory") {
+        Question.findByIdAndDelete(userId, (err) => {
+            if (err) {
+                return res.status(500).send('Failed to delete the user.');
+            }
+            res.redirect('/admin');
+        });
+    } else {
+        User.findByIdAndDelete(userId, (err) => {
+            if (err) {
+                return res.status(500).send('Failed to delete the user.');
+            }
+            res.redirect('/admin');
+        });
+    }
 });
 
 app.post("/admin/search",function(req,res){
